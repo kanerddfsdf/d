@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Notes</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Your Notes</h2>
+        <textarea id="noteInput" placeholder="Write your note here..." rows="10" cols="30"></textarea>
+        <br>
+        <button onclick="saveNote()">Save Note</button>
+        <button onclick="viewNotes()">View Notes</button>
+
+        <h3>Saved Notes:</h3>
+        <ul id="noteList"></ul>
+    </div>
+
+    <script>
+        // Function to save a note
+        function saveNote() {
+            const note = document.getElementById("noteInput").value;
+            if (!note) {
+                alert("Please write something to save.");
+                return;
+            }
+
+            let notes = JSON.parse(localStorage.getItem("notes")) || [];
+            notes.push(note);
+            localStorage.setItem("notes", JSON.stringify(notes));
+
+            document.getElementById("noteInput").value = ''; // Clear input
+            alert("Note saved!");
+            viewNotes();
+        }
+
+        // Function to view all saved notes
+        function viewNotes() {
+            const notes = JSON.parse(localStorage.getItem("notes")) || [];
+            const noteList = document.getElementById("noteList");
+            noteList.innerHTML = ''; // Clear current list
+
+            notes.forEach((note, index) => {
+                const li = document.createElement("li");
+                li.textContent = note;
+                noteList.appendChild(li);
+            });
+        }
+
+        // Initial view of notes
+        viewNotes();
+    </script>
+</body>
+</html>
